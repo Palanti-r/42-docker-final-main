@@ -2,6 +2,12 @@ FROM golang:1.22
 
 WORKDIR /app
 
-COPY . .
+COPY go.mod go.sum ./
 
-RUN go mod tidy
+RUN go mod download
+
+COPY ./ ./
+
+RUN CGO_ENABLED=0 GOODS=linux GOARHC=amd64 go build -o /percel
+
+CMD ["/percel"]
